@@ -47,11 +47,16 @@ module.exports = {
         cordova.exec(success, failure, "BluetoothSerial", "write", [data]);
     },
 
+    // writes data to the bluetooth serial port - data must be a string
+    writeBuffer: function (data, success, failure) {
+        cordova.exec(success, failure, "BluetoothSerial", "writeBuffer", [data]);
+    },
+
     // calls the success callback when new data is available
     subscribe: function (delimiter, success, failure) {
         cordova.exec(success, failure, "BluetoothSerial", "subscribe", [delimiter]);
     },
-    
+
     // removes data subscription
     unsubscribe: function (success, failure) {
         cordova.exec(success, failure, "BluetoothSerial", "unsubscribe", []);
@@ -61,10 +66,10 @@ module.exports = {
     clear: function (success, failure) {
         cordova.exec(success, failure, "BluetoothSerial", "clear", []);
     },
-    
+
     // reads the RSSI of the *connected* peripherial
     readRSSI: function (success, failure) {
-        cordova.exec(success, failure, "BluetoothSerial", "readRSSI", []);        
+        cordova.exec(success, failure, "BluetoothSerial", "readRSSI", []);
     }
 
 };
