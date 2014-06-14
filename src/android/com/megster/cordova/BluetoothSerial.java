@@ -33,6 +33,7 @@ public class BluetoothSerial extends CordovaPlugin {
     private static final String WRITE_BUFFER = "writeBuffer";
     private static final String AVAILABLE = "available";
     private static final String READ = "read";
+    private static final String READ_BUFFER = "readBuffer";
     private static final String READ_UNTIL = "readUntil";
     private static final String SUBSCRIBE = "subscribe";
     private static final String UNSUBSCRIBE = "unsubscribe";
@@ -63,6 +64,7 @@ public class BluetoothSerial extends CordovaPlugin {
     public static final String TOAST = "toast";
 
     StringBuffer buffer = new StringBuffer();
+    private List<byte> byteBuffer = new ArrayList<byte>();
     private String delimiter;
 
     @Override
@@ -120,6 +122,10 @@ public class BluetoothSerial extends CordovaPlugin {
         } else if (action.equals(READ)) {
 
             callbackContext.success(read());
+
+        } else if (action.equals(READ_BUFFER)) {
+
+            callbackContext.success(readBuffer());
 
         } else if (action.equals(READ_UNTIL)) {
 
@@ -222,6 +228,7 @@ public class BluetoothSerial extends CordovaPlugin {
          public void handleMessage(Message msg) {
              switch (msg.what) {
                  case MESSAGE_READ:
+                    byteBuffer.add((byte[]) msg.obj);
                     buffer.append((String)msg.obj);
 
                     if (dataAvailableCallback != null) {
@@ -298,6 +305,10 @@ public class BluetoothSerial extends CordovaPlugin {
         String data = buffer.substring(0, length);
         buffer.delete(0, length);
         return data;
+    }
+
+    private byte[] readBuffer() {
+        return (byte[]) byteBuffer.toArray();
     }
 
     private String readUntil(String c) {
