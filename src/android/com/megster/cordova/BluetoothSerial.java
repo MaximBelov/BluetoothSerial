@@ -17,6 +17,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -64,7 +66,7 @@ public class BluetoothSerial extends CordovaPlugin {
     public static final String TOAST = "toast";
 
     StringBuffer buffer = new StringBuffer();
-    private List<byte> byteBuffer = new ArrayList<byte>();
+    private List<Byte> byteBuffer = new ArrayList<Byte>();
     private String delimiter;
 
     @Override
@@ -228,8 +230,14 @@ public class BluetoothSerial extends CordovaPlugin {
          public void handleMessage(Message msg) {
              switch (msg.what) {
                  case MESSAGE_READ:
-                    byteBuffer.add((byte[]) msg.obj);
-                    buffer.append((String)msg.obj);
+                    byte[] bytes = (byte[]) msg.obj;
+                    for(int i = 0; i < bytes.length; i++) {
+                        byteBuffer.add(bytes[i]);
+                    }
+                    String dataString = new String(bytes, 0, bytes.length);
+
+                    // buffer.append((String)msg.obj);
+                    buffer.append(dataString);
 
                     if (dataAvailableCallback != null) {
                         sendDataToSubscriber();
@@ -308,7 +316,15 @@ public class BluetoothSerial extends CordovaPlugin {
     }
 
     private byte[] readBuffer() {
-        return (byte[]) byteBuffer.toArray();
+        Byte[] byteObjects = byteBuffer.toArray(new Byte[byteBuffer.size()]);
+        byte[] bytes = new byte[byteObjects.length];
+        int j=0;
+        // Unboxing byte values. (Byte[] to byte[])
+        for(Byte b: byteObjects)
+            bytes[j++] = b.byteValue();
+
+        byteBuffer.clear();
+        return bytes;
     }
 
     private String readUntil(String c) {
