@@ -462,8 +462,8 @@ public class BluetoothSerialService {
                     // Send the raw bytestream to the UI Activity.
                     // We make a copy because the full array can have extra data at the end
                     // when / if we read less than its size.
-                    if (bytes > 0) {
-                        byte[] rawdata = Arrays.copyOf(buffer, bytes);
+                    if (bytesRead > 0) {
+                        byte[] rawdata = Arrays.copyOf(buffer, bytesRead);
                         mHandler.obtainMessage(BluetoothSerial.MESSAGE_READ_RAW, rawdata).sendToTarget();
                     }
 

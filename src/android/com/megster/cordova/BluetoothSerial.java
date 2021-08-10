@@ -393,8 +393,8 @@ public class BluetoothSerial extends CordovaPlugin {
                     break;
                  case MESSAGE_READ_RAW:
                     if (rawDataAvailableCallback != null) {
-                        byte[] bytes = (byte[]) msg.obj;
-                        sendRawDataToSubscriber(bytes);
+                        byte[] bytes2 = (byte[]) msg.obj;
+                        sendRawDataToSubscriber(bytes2);
                     }
                     break;
                  case MESSAGE_STATE_CHANGE:
