@@ -37,6 +37,11 @@ module.exports = {
         cordova.exec(success, failure, "BluetoothSerial", "read", []);
     },
 
+    // read all the data in the buffer
+    readBuffer: function (success, failure) {
+        cordova.exec(success, failure, "BluetoothSerial", "readBuffer", []);
+    },
+
     // reads the data in the buffer up to and including the delimiter
     readUntil: function (delimiter, success, failure) {
         cordova.exec(success, failure, "BluetoothSerial", "readUntil", [delimiter]);
@@ -57,6 +62,11 @@ module.exports = {
         }
 
         cordova.exec(success, failure, "BluetoothSerial", "write", [data]);
+    },
+
+    // writes data to the bluetooth serial port - data must be a string
+    writeBuffer: function (data, success, failure) {
+        cordova.exec(success, failure, "BluetoothSerial", "writeBuffer", [data]);
     },
 
     // calls the success callback when new data is available

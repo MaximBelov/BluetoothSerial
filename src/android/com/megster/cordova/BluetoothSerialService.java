@@ -442,17 +442,22 @@ public class BluetoothSerialService {
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
             byte[] buffer = new byte[1024];
-            int bytes;
+            int bytesRead;
 
             // Keep listening to the InputStream while connected
             while (true) {
                 try {
                     // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
-                    String data = new String(buffer, 0, bytes);
+                    bytesRead = mmInStream.read(buffer);
+                    // String data = new String(buffer, 0, bytesRead);
+
+                    byte[] messageBytes = new byte[bytesRead];
+                    for (int i = 0; i < bytesRead; i++) {
+                        messageBytes[i] = buffer[i];
+                    }
 
                     // Send the new data String to the UI Activity
-                    mHandler.obtainMessage(BluetoothSerial.MESSAGE_READ, data).sendToTarget();
+                    mHandler.obtainMessage(BluetoothSerial.MESSAGE_READ, messageBytes).sendToTarget();
 
                     // Send the raw bytestream to the UI Activity.
                     // We make a copy because the full array can have extra data at the end
